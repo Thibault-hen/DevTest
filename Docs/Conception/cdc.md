@@ -8,26 +8,30 @@ Créer une application web de questionnaires en ligne sur la programmation et le
 
 2.1. Côté utilisateur
 
-Inscription et connexion : Création de compte avec validation email.
+Inscription et connexion : Création de compte avec validation email
 
 Participation aux questionnaires : Questions à choix multiples (une ou plusieurs réponses correctes).
 
-Profil utilisateur : Historique des questionnaires et scores.
+Profil utilisateur : Historique des quiz et scores / gestion du compte
 
 2.2. Côté administrateur
 
-Gestion des utilisateurs : Visualisation, modification, suppression.
+Visualisation des statistiques : Graphiques résultat quiz/moyenne/catégorie
 
-Gestion des contenus : Ajout, modification, suppression de thèmes, questions et réponses.
+Gestion des utilisateurs : Visualisation, modification, suppression
+
+Gestion des contenus : Ajout, modification, suppression de thèmes, questions et réponses
 
 ## 3. Technologies
 
-Frontend : Vue.js avec HeadlessUI et Tailwind CSS.
+Frontend : Nuxt
 
-Backend : Express.js / Node.js.
+Backend : Express.js / Node.js
 
-Base de données : PostgreSQL.
+Bibliothèques: Nuxt UI, Prisma
+
+BDD: PostgreSQL
 
 ## 4. Spécifications techniques
 
-Architecture : API RESTful pour la communication frontend-backend.
+Architecture : API REST et SPA VueJS
