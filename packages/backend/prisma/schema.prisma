@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id String @id @default(cuid())
+  firstname String
+  lastname String
+  email String @unique
+  password String
+  role Role @default(USER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  quizzes Quiz[]
+  results Result[]
+}
+
+model QuizImage{
+  id String @id @default(cuid())
+  imageUrl String @map("image_url")
+  altText String? @map("alt_text")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  quizzes Quiz[]
+}
+
+model Quiz {
+  id String @id @default(cuid())
+  title String @unique
+  description String?
+  estimatedTime Int? @map("estimated_time")
+  authorId String @map("author_id")
+  difficultyId String @map("difficulty_id")
+  quizImageId String @map("quiz_image_id")
+  author User @relation(fields: [authorId], references: [id])
+  difficulty Difficulty @relation(fields: [difficultyId], references: [id], onDelete: Cascade)
+  quizImage QuizImage @relation(fields: [quizImageId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  questions Question[]
+  themes Theme[]
+  results Result[]
+}
+
+model Theme {
+  id String @id @default(cuid())
+  title String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  quizzes Quiz[]
+}
+
+model Question {
+  id String @id @default(cuid())
+  description String
+  is_multiple Boolean
+  quizId String @map("quiz_id")
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  answers Answer[]
+}
+
+model Answer {
+  id String @id @default(cuid())
+  description String
+  is_correct Boolean
+  questionId String @map("question_id")
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  result_answer Result_User_Answer[]
+}
+
+model Difficulty {
+  id String @id @default(cuid())
+  name String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  quizzes Quiz[]
+}
+
+model Result{
+  id String @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  userId String @map("user_id")
+  quizId String @map("quiz_id")
+  participant User @relation(fields: [userId], references: [id])
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  answer_result Result_User_Answer[]
+}
+
+model Result_User_Answer{
+  id String @id @default(cuid())
+  resultId String @map("result_id")
+  answerId String @map("answer_id")
+
+  result Result @relation(fields: [resultId], references: [id])
+  answer Answer @relation(fields: [answerId], references: [id])
+}

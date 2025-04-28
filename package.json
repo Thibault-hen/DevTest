@@ -1,0 +1,19 @@
+{
+	"name": "dev-test",
+	"version": "1.0.0",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"back:dev": "pnpm --filter backend dev",
+		"back:seed": "pnpm --filter backend db:seed",
+		"back:create": "pnpm --filter backend run db:migrate && pnpm --filter backend run db:generate",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.5.2",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4"
+	}
+}
