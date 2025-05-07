@@ -18,13 +18,11 @@ QUESTION: num_question, description, est_multiple
 APPARTIENT, 0N QUIZ, 11 QUESTION
 QUIZ: num_quiz, titre, description, temps
 CREER, 11 QUIZ, 0N UTILISATEUR
-ROLE: num_role, nom
 
 POSSEDE2, 0N QUESTION, 11 REPONSE
 POSSEDE3, 11 QUIZ, 0N DIFFICULTE
 POSSEDE5, 0N QUIZ, 11 RESULTAT
-UTILISATEUR: num_utilisateur, nom, prenom, email, mot de passe
-POSSEDE7, 11 UTILISATEUR, 0N ROLE
+UTILISATEUR: num_utilisateur, nom, prenom, spécialisation, email, mot de passe, role
 
 REPONSE: num_reponse, description, est_correct
 DIFFICULTE: num_difficulte, nom
@@ -37,5 +35,6 @@ RESULTAT_REPONSE_UTILISATEUR: num_reponse_utilisateur
 POSSEDE6, 1N RESULTAT, 11 RESULTAT_REPONSE_UTILISATEUR
 :
 :
+
 
 ```

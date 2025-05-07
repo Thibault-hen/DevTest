@@ -22,6 +22,7 @@ model User {
   id String @id @default(cuid())
   firstname String
   lastname String
+  specialization String
   email String @unique
   password String
   role Role @default(USER)
@@ -30,6 +31,8 @@ model User {
 
   quizzes Quiz[]
   results Result[]
+
+  @@map("user")
 }
 
 model QuizImage{
@@ -40,6 +43,8 @@ model QuizImage{
   updatedAt DateTime @updatedAt @map("updated_at")
 
   quizzes Quiz[]
+
+  @@map("quiz_image")
 }
 
 model Quiz {
@@ -50,15 +55,18 @@ model Quiz {
   authorId String @map("author_id")
   difficultyId String @map("difficulty_id")
   quizImageId String @map("quiz_image_id")
-  author User @relation(fields: [authorId], references: [id])
-  difficulty Difficulty @relation(fields: [difficultyId], references: [id], onDelete: Cascade)
-  quizImage QuizImage @relation(fields: [quizImageId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  author User @relation(fields: [authorId], references: [id])
+  difficulty Difficulty @relation(fields: [difficultyId], references: [id], onDelete: Cascade)
+  quizImage QuizImage @relation(fields: [quizImageId], references: [id])
+  
   questions Question[]
   themes Theme[]
   results Result[]
+
+  @@map("quiz")
 }
 
 model Theme {
@@ -68,6 +76,8 @@ model Theme {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   quizzes Quiz[]
+
+  @@map("theme")
 }
 
 model Question {
@@ -75,11 +85,14 @@ model Question {
   description String
   is_multiple Boolean
   quizId String @map("quiz_id")
-  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
   answers Answer[]
+
+  @@map("question")
 }
 
 model Answer {
@@ -87,11 +100,14 @@ model Answer {
   description String
   is_correct Boolean
   questionId String @map("question_id")
-  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
   result_answer Result_User_Answer[]
+
+  @@map("answer")
 }
 
 model Difficulty {
@@ -101,6 +117,8 @@ model Difficulty {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   quizzes Quiz[]
+
+  @@map("difficulty")
 }
 
 model Result{
@@ -112,6 +130,8 @@ model Result{
   quiz Quiz @relation(fields: [quizId], references: [id])
 
   answer_result Result_User_Answer[]
+
+  @@map("result")
 }
 
 model Result_User_Answer{
@@ -121,4 +141,6 @@ model Result_User_Answer{
 
   result Result @relation(fields: [resultId], references: [id])
   answer Answer @relation(fields: [answerId], references: [id])
+
+  @@map("result_user_answer")
 }

@@ -1,0 +1,45 @@
+# --- General ---
+# Ignore version control history
+.git
+.gitignore
+.gitattributes
+
+# Ignore Docker specific files (they are used to build, not needed inside)
+.dockerignore
+Dockerfile*
+docker-compose*
+compose*
+
+# Ignore IDE/Editor specific files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+*.komodotools
+*~
+*.swp
+
+# Ignore OS-specific files
+.DS_Store
+
+# --- Node.js / pnpm ---
+# Ignore the main dependency folder. Dependencies should be installed INSIDE the container.
+# This is the most important line for build context size and speed.
+node_modules
+
+# Ignore pnpm debug logs generated on the host
+pnpm-debug.log*
+
+# --- Build Artifacts ---
+# Ignore common build output directories (adjust if your output dir is different)
+dist
+build
+out
+
+# --- Logs ---
+# Ignore application log files generated during local development
+*.log
+logs/
+
+# Ignore generated files
+generated/

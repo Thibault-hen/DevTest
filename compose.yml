@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - devtest_db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: sh -c "pnpm db:migrate && pnpm db:generate && pnpm dev"
+
+  devtest_db: 
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: devtest
+      POSTGRES_USER: devtest
+      POSTGRES_DB: devtest
+    volumes:
+      # On va partager le volume post_db_data avec le conteneur
+      # Cela va permettre de garder les données même si le conteneur est supprimé
+      - devtest_db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  devtest_db_data:
