@@ -7,6 +7,9 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { v1Routes } from './routes';
+import fastifySession from '@fastify/session';
+import fastifyCookie from '@fastify/cookie';
+import fastifyRateLimit from '@fastify/rate-limit';
 
 const port = Number(process.env.PORT) || 3000;
 
@@ -31,6 +34,24 @@ const fastify = Fastify({
 
 fastify.setValidatorCompiler(validatorCompiler);
 fastify.setSerializerCompiler(serializerCompiler);
+
+fastify.register(fastifyRateLimit, {
+  global: false,
+});
+
+fastify.register(fastifyCookie);
+fastify.register(fastifySession, {
+  secret:
+    process.env.SESSION_SECRET ||
+    'mon-super-secreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet',
+  cookieName: 'DevTest_session',
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: 'strict',
+  },
+});
 
 fastify.register(fastifySensible);
 

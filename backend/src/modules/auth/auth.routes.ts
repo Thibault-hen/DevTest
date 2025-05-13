@@ -1,12 +1,35 @@
 import type { FastifyInstance } from 'fastify';
-import { createUserSchema } from './auth.schemas';
+import { signInUserSchema, signUpUserSchema } from './auth.schemas';
 import { authController } from './auth.controller';
+import { authMiddleware } from './auth.middleware';
 
 export const authRoutes = (app: FastifyInstance) => {
-  app.post('/', {
+  app.post('/signup', {
+    config: {
+      rateLimit: {
+        max: 5,
+        timeWindow: '1 minute',
+      },
+    },
     schema: {
-      body: createUserSchema,
+      body: signUpUserSchema,
     },
     handler: authController.signup,
+  });
+  app.post('/signin', {
+    config: {
+      rateLimit: {
+        max: 5,
+        timeWindow: '1 minute',
+      },
+    },
+    schema: {
+      body: signInUserSchema,
+    },
+    handler: authController.signin,
+  });
+  app.post('/logout', {
+    preHandler: authMiddleware.isAuthenticated,
+    handler: authController.logout,
   });
 };
