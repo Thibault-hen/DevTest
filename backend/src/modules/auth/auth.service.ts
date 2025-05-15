@@ -1,6 +1,6 @@
 import type { User } from '@prisma/client';
 import { prisma } from '../../utils/prisma';
-import type { signUpUserType } from './auth.schemas';
+import type { signUpUserType } from './auth.schema';
 import argon2 from 'argon2';
 
 export type CreatedUser = Omit<User, 'password'>;

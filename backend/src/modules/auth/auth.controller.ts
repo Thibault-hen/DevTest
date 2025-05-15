@@ -1,6 +1,6 @@
 import { authService } from './auth.service';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import type { signUpUserType, signInUserType } from './auth.schemas';
+import type { signUpUserType, signInUserType } from './auth.schema';
 import argon2 from 'argon2';
 
 export const authController = {

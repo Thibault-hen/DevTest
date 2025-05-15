@@ -1,9 +1,9 @@
-import type { FastifyInstance } from 'fastify';
-import { signInUserSchema, signUpUserSchema } from './auth.schemas';
+import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import { authController } from './auth.controller';
 import { authMiddleware } from './auth.middleware';
+import { signInUserSchema, signUpUserSchema } from './auth.schema';
 
-export const authRoutes = (app: FastifyInstance) => {
+export const authRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   app.post('/signup', {
     config: {
       rateLimit: {
