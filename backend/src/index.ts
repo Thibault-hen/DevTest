@@ -1,5 +1,4 @@
 import Fastify from 'fastify';
-import 'dotenv/config';
 import fastifySensible from '@fastify/sensible';
 import {
   serializerCompiler,
@@ -10,8 +9,7 @@ import { v1Routes } from './routes';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import fastifyRateLimit from '@fastify/rate-limit';
-
-const port = Number(process.env.PORT) || 3000;
+import { env } from './config/env';
 
 const envToLogger = {
   development: {
@@ -26,10 +24,9 @@ const envToLogger = {
   production: true,
   test: false,
 };
-const nodeEnv =
-  (process.env.NODE_ENV as keyof typeof envToLogger) || 'development';
+const nodeEnv = env.NODE_ENV as keyof typeof envToLogger;
 const fastify = Fastify({
-  logger: envToLogger[nodeEnv] ?? true,
+  logger: envToLogger[nodeEnv],
 }).withTypeProvider<ZodTypeProvider>();
 
 fastify.setValidatorCompiler(validatorCompiler);
@@ -41,12 +38,10 @@ fastify.register(fastifyRateLimit, {
 
 fastify.register(fastifyCookie);
 fastify.register(fastifySession, {
-  secret:
-    process.env.SESSION_SECRET ||
-    'mon-super-secreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet',
+  secret: env.SESSION_SECRET,
   cookieName: 'DevTest_session',
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24,
     sameSite: 'strict',
@@ -59,7 +54,7 @@ fastify.register(v1Routes, { prefix: 'api/v1' });
 
 const start = async () => {
   try {
-    await fastify.listen({ host: '0.0.0.0', port: port });
+    await fastify.listen({ host: '0.0.0.0', port: env.PORT });
     console.log(fastify.printRoutes());
   } catch (err) {
     fastify.log.error(err);

@@ -1,3 +1,4 @@
+import type { User } from '@prisma/client';
 import { z } from 'zod';
 
 export const signUpUserSchema = z.object({
@@ -13,5 +14,6 @@ export const signInUserSchema = z.object({
   password: z.string().min(8),
 });
 
+export type CreatedUser = Omit<User, 'password'>;
 export type signUpUserType = z.infer<typeof signUpUserSchema>;
 export type signInUserType = z.infer<typeof signInUserSchema>;

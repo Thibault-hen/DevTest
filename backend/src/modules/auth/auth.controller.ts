@@ -9,9 +9,8 @@ export const authController = {
     reply: FastifyReply,
   ) {
     const isEmailInUse = await authService.getUserByEmail(req.body.email);
-
     if (isEmailInUse) {
-      return reply.badRequest('This email is already in use');
+      return reply.conflict('This email is already in use');
     }
 
     const user = await authService.signup(req.body);

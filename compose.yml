@@ -18,10 +18,8 @@ services:
     image: postgres
     restart: always
     shm_size: 128mb
-    environment:
-      POSTGRES_PASSWORD: devtest
-      POSTGRES_USER: devtest
-      POSTGRES_DB: devtest
+    env_file:
+      - ./backend/.env
     volumes:
       # On va partager le volume post_db_data avec le conteneur
       # Cela va permettre de garder les données même si le conteneur est supprimé
