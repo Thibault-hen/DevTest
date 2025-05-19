@@ -1,4 +1,5 @@
 import '@fastify/session';
+import type { env } from '../config/env';
 
 declare module '@fastify/session' {
   interface FastifySessionObject {

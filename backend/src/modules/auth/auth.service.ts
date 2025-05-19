@@ -23,12 +23,12 @@ export const authService = {
   },
 
   async getUserByEmail(email: string): Promise<User | null> {
-    const user: User | null = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         email: email,
       },
     });
 
-    return user || null;
+    return user;
   },
 };

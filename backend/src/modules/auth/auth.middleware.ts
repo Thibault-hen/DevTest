@@ -3,7 +3,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 export const authMiddleware = {
   async isAuthenticated(req: FastifyRequest, reply: FastifyReply) {
     if (!req.session.user) {
-      reply.unauthorized('You need to log in first');
+      reply.unauthorized('You need to be logged in to perform this action');
       return;
     }
   },

@@ -1,4 +1,8 @@
-import Fastify from 'fastify';
+import Fastify, {
+  type FastifyError,
+  type FastifyReply,
+  type FastifyRequest,
+} from 'fastify';
 import fastifySensible from '@fastify/sensible';
 import {
   serializerCompiler,
@@ -29,28 +33,36 @@ const fastify = Fastify({
   logger: envToLogger[nodeEnv],
 }).withTypeProvider<ZodTypeProvider>();
 
-fastify.setValidatorCompiler(validatorCompiler);
-fastify.setSerializerCompiler(serializerCompiler);
-
-fastify.register(fastifyRateLimit, {
-  global: false,
-});
-
-fastify.register(fastifyCookie);
-fastify.register(fastifySession, {
-  secret: env.SESSION_SECRET,
-  cookieName: 'DevTest_session',
-  cookie: {
-    secure: env.NODE_ENV === 'production',
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24,
-    sameSite: 'strict',
-  },
-});
-
-fastify.register(fastifySensible);
-
-fastify.register(v1Routes, { prefix: 'api/v1' });
+fastify
+  .setValidatorCompiler(validatorCompiler)
+  .setSerializerCompiler(serializerCompiler)
+  .register(fastifyRateLimit, {
+    global: false,
+  })
+  .register(fastifyCookie)
+  .register(fastifySession, {
+    secret: env.SESSION_SECRET,
+    cookieName: 'DevTest_session',
+    cookie: {
+      secure: env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'strict',
+    },
+  })
+  .register(fastifySensible)
+  .register(v1Routes, { prefix: 'api/v1' })
+  .setErrorHandler(
+    (err: FastifyError, req: FastifyRequest, reply: FastifyReply) => {
+      req.log.error(err);
+      if (env.NODE_ENV === 'production') {
+        return reply.internalServerError(
+          'Something went wrong, please try again later',
+        );
+      }
+      return reply.send(err);
+    },
+  );
 
 const start = async () => {
   try {
@@ -61,5 +73,14 @@ const start = async () => {
     process.exit(1);
   }
 };
+
+const closeServer = async (signal: string) => {
+  fastify.log.info(`Received singal ${signal}, closing server...`);
+  await fastify.close();
+  process.exit(0);
+};
+
+process.on('SIGINT', () => closeServer('SIGINT'));
+process.on('SIGTERM', () => closeServer('SIGTERM'));
 
 start();
