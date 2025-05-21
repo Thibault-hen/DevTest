@@ -5,7 +5,6 @@ import type {
   CreateDifficultyType,
   UpdateDifficultyType,
 } from './difficulty.schema';
-import { prisma } from '@utils/prisma';
 
 export const difficultyController = {
   async getAllDifficulties(req: FastifyRequest, reply: FastifyReply) {

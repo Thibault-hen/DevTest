@@ -9,4 +9,12 @@ declare module '@fastify/session' {
       role: string;
     };
   }
+  interface Session {
+    userId?: string;
+    id: string; // or whatever you're using
+  }
+
+  interface FastifyRequest {
+    session: Session;
+  }
 }
