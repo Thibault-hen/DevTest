@@ -1,12 +1,13 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { accountService } from './account.service';
 import type { UpdatePasswordType, UpdateUserType } from './account.schema';
+import { accountService } from './account.service';
+import type { IdParamsType } from '@utils/schema';
 
 export const accountController = {
   async me(req: FastifyRequest, reply: FastifyReply) {
-    const user = req.session.user;
+    const { id } = req.session.user;
 
-    const foundUser = await accountService.getUserById(user.id);
+    const foundUser = await accountService.getUserById(id);
 
     return reply.code(200).send({
       data: {
@@ -71,8 +72,8 @@ export const accountController = {
       if (err) {
         return reply.internalServerError('Failed delete this account');
       }
-      await accountService.deleteUser(user.id);
 
+      await accountService.deleteUser(user.id);
       return reply.status(200).send({
         status: 'success',
         message: 'Account deleted',

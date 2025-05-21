@@ -1,7 +1,7 @@
 import type { User } from '@prisma/client';
-import { prisma } from '../../utils/prisma';
 import * as argon2 from 'argon2';
 import type { UpdatedUser, UpdateUserType } from './account.schema';
+import { prisma } from '@utils/prisma';
 
 export const accountService = {
   async getUserById(userId: string): Promise<User> {

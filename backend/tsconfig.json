@@ -11,7 +11,13 @@
     "strict": true, // Enable all strict type-checking options
     "resolveJsonModule": true, // Allow importing JSON files
     "types": ["node"], // Include types for Node.js
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "baseUrl": ".",
+    "paths": {
+      "@modules/*": ["src/modules/*"],
+      "@utils/*": ["src/utils/*"],
+      "@config/*": ["src/config/*"]
+    }
   },
   "include": [
     "src/**/*.ts" // Include all TypeScript files in the 'src' directory

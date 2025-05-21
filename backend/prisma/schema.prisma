@@ -53,13 +53,13 @@ model Quiz {
   description String?
   estimatedTime Int? @map("estimated_time")
   authorId String @map("author_id")
-  difficultyId String @map("difficulty_id")
+  difficultyId String? @map("difficulty_id")
   quizImageId String @map("quiz_image_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   author User @relation(fields: [authorId], references: [id])
-  difficulty Difficulty @relation(fields: [difficultyId], references: [id], onDelete: Cascade)
+  difficulty Difficulty? @relation(fields: [difficultyId], references: [id], onDelete: SetNull)
   quizImage QuizImage @relation(fields: [quizImageId], references: [id])
   
   questions Question[]
@@ -112,7 +112,7 @@ model Answer {
 
 model Difficulty {
   id String @id @default(cuid())
-  name String
+  name String @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

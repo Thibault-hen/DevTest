@@ -1,25 +1,33 @@
 import type { User, Theme, Difficulty, QuizImage, Quiz } from '@prisma/client';
+import argon2, { argon2id } from 'argon2';
+
+const password = 'password';
+
+const hashedPassword = await argon2.hash(password, {
+  type: argon2id,
+});
 
 const users = [
   {
     firstname: 'dede',
     lastname: 'dodo',
     email: 'test@test.fr',
-    password: 'password',
+    password: hashedPassword,
     specialization: 'Développeur Backend',
+    role: 'ADMIN',
   },
   {
     firstname: 'thibault',
     lastname: ':)',
     email: 'test@oclock.fr',
-    password: 'password',
+    password: hashedPassword,
     specialization: 'Développeur Frontend',
   },
   {
     firstname: 'francis',
     lastname: 'lallane',
     email: 'francis@test.fr',
-    password: 'password',
+    password: hashedPassword,
     specialization: 'Développeur Fullstack',
   },
 ] as User[];

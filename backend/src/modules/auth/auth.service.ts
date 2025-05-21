@@ -1,7 +1,7 @@
 import type { User } from '@prisma/client';
-import { prisma } from '../../utils/prisma';
 import type { CreatedUser, signUpUserType } from './auth.schema';
 import argon2 from 'argon2';
+import { prisma } from '@utils/prisma';
 
 export const authService = {
   async signup(data: signUpUserType): Promise<CreatedUser> {

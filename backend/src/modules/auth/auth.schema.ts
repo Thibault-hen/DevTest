@@ -15,5 +15,5 @@ export const signInUserSchema = z.object({
 });
 
 export type CreatedUser = Omit<User, 'password'>;
-export type signUpUserType = z.infer<typeof signUpUserSchema>;
-export type signInUserType = z.infer<typeof signInUserSchema>;
+export type SignUpUserType = z.infer<typeof signUpUserSchema>;
+export type SignInUserType = z.infer<typeof signInUserSchema>;

@@ -1,11 +1,11 @@
 import { authService } from './auth.service';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import type { signUpUserType, signInUserType } from './auth.schema';
+import type { SignUpUserType, SignInUserType } from './auth.schema';
 import argon2 from 'argon2';
 
 export const authController = {
   async signup(
-    req: FastifyRequest<{ Body: signUpUserType }>,
+    req: FastifyRequest<{ Body: SignUpUserType }>,
     reply: FastifyReply,
   ) {
     const isEmailInUse = await authService.getUserByEmail(req.body.email);
@@ -24,7 +24,7 @@ export const authController = {
   },
 
   async signin(
-    req: FastifyRequest<{ Body: signInUserType }>,
+    req: FastifyRequest<{ Body: SignInUserType }>,
     reply: FastifyReply,
   ) {
     const user = await authService.getUserByEmail(req.body.email);
