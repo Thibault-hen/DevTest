@@ -1,9 +1,8 @@
 import type { Difficulty } from '@prisma/client';
 import { prisma } from '@utils/prisma';
-import type { IdParamType } from '@utils/schema';
+import type { IdParamType, NameParamType } from '@utils/schema';
 import type {
   CreateDifficultyType,
-  NameParamType,
   UpdateDifficultyType,
 } from './difficulty.schema';
 
@@ -25,7 +24,7 @@ export const difficultyService = {
   async getDifficultyByName(
     difficultyName: NameParamType,
   ): Promise<Difficulty | null> {
-    return prisma.difficulty.findFirst({
+    return prisma.difficulty.findUnique({
       where: {
         name: difficultyName,
       },
@@ -33,25 +32,21 @@ export const difficultyService = {
   },
 
   async createDifficulty(data: CreateDifficultyType): Promise<Difficulty> {
-    const createdDifficulty = await prisma.difficulty.create({
+    return prisma.difficulty.create({
       data,
     });
-
-    return createdDifficulty;
   },
 
   async updateDifficulty(
     difficultyId: IdParamType,
     data: UpdateDifficultyType,
   ): Promise<Difficulty> {
-    const updatedDifficulty = await prisma.difficulty.update({
+    return prisma.difficulty.update({
       where: {
         id: difficultyId,
       },
       data,
     });
-
-    return updatedDifficulty;
   },
 
   async deleteDifficulty(difficultyId: IdParamType) {

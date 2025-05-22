@@ -10,4 +10,3 @@ export const updateDifficultySchema = z.object({
 
 export type CreateDifficultyType = z.infer<typeof createDifficultySchema>;
 export type UpdateDifficultyType = z.infer<typeof updateDifficultySchema>;
-export type NameParamType = z.infer<typeof createDifficultySchema>['name'];

@@ -11,13 +11,7 @@ docker-compose*
 compose*
 
 # Ignore IDE/Editor specific files
-.idea
 .vscode
-*.sublime-project
-*.sublime-workspace
-*.komodotools
-*~
-*.swp
 
 # Ignore OS-specific files
 .DS_Store

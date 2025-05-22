@@ -11,7 +11,7 @@ export const difficultyController = {
     const difficulties = await difficultyService.getAllDifficulties();
 
     if (!difficulties) {
-      return reply.notFound('Could not find any difficulties');
+      return reply.notFound('Could not found any difficulties');
     }
 
     return reply.status(200).send({
@@ -29,7 +29,7 @@ export const difficultyController = {
 
     if (!foundDifficulty) {
       return reply.notFound(
-        'This difficulty with the provided id do not exist',
+        'The difficulty with the provided ID does not exist',
       );
     }
 
@@ -70,7 +70,7 @@ export const difficultyController = {
 
     if (!foundDifficulty) {
       return reply.notFound(
-        'This difficulty with the provided id do not exist',
+        'The difficulty with the provided ID does not exist',
       );
     }
 
@@ -111,7 +111,7 @@ export const difficultyController = {
 
     return reply.status(200).send({
       status: 'success',
-      message: 'Difficulty deleted',
+      message: 'The difficulty has been deleted',
     });
   },
 };
